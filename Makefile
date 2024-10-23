@@ -4,8 +4,8 @@ HEADERS = mystring.h
 
 CC = gcc
 CXX = g++
-CFLAGS = -std=c11 -O0 -Wall -Wdeprecated -pedantic -g
-CXXFLAGS = -std=c++11 -O0 -Wall -Wdeprecated -pedantic -g
+CFLAGS = -std=c11  -g
+CXXFLAGS = -std=c++11  -g
 LDFLAGS = -g
 
 .PHONY: all clean
