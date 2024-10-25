@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h>
 #include "mystring.h"
 
 int main()
@@ -44,7 +45,7 @@ int main()
     std::cout << "a megadott string: " << tetszoleges << std::endl;
     std::cout << "hossza: " << tetszoleges.getLength() << std::endl;
 
-    tetszoleges.felszab();
+    tetszoleges.~MyString();
 
 
     return 0;

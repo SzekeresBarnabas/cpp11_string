@@ -2,7 +2,6 @@
 #include <string.h>
 #include <iostream>
 
-
 class MyString
 {
 private:
@@ -10,202 +9,70 @@ private:
     int* length_;
     int* prefCount_;
 
+    // karakter tomb lekerdezese
+    char* getChar() const;
+
+    // felszabaditast vegzo tagfuggveny
+    inline void felszab();
+
 public:
 
-    //létrehozás alapértelmezett konstruktorral
-    MyString()
-    {
-        this->s_ = nullptr;
-        this->length_ = nullptr;
-        this->prefCount_ = nullptr;
-    }
-
-    //létrehozás karaktertömbből
-    MyString(char* s, int length)
-    {
-        this->s_ = new char[length+1];
-        this->length_ = new int(length);
-       
-        strcpy(s_, s);
-
-        this->s_[length+1] = '\0';
-
-        this->prefCount_ = new int(1);
-    }
+    //letrehozas alapertelmezett konstruktorral
+    MyString();
     
-    MyString(char* s)
-    {   
-        int tmp = strlen(s);
-        this->length_ = new int(tmp);
-        this->s_ = new char[*length_+1];
+    //letrehozas karaktertombol es meretbol
+    MyString(const char* s, const int length);
 
-        strcpy(s_, s);
+    // letrehozas csak karakter tombbol
+    MyString(const char* s);
+    
+    // copy konstruktor
+    MyString(const MyString& theOther);
 
-        //this->s_[*length_+1] = '\0';
-
-        this->prefCount_ = new int(1);
-    }
-
-    MyString(const MyString& theOther)
-    {
-        this->s_ = theOther.s_;
-        this->length_ = theOther.length_;
-        this->prefCount_ = theOther.prefCount_;
-
-        ++ *prefCount_;
-        
-    }
-
-    ~MyString()
-    {
-        this->felszab();
-    }
-
-    void felszab()
-    {
-        if(prefCount_ !=nullptr)
-        {
-            --*prefCount_;
-        
-
-            if(*prefCount_ == 0)
-            {
-                delete prefCount_;
-                delete length_;
-                delete[] this->s_;
-                
-                prefCount_ = nullptr;
-                length_= nullptr;
-                s_ = nullptr; 
-            }
-            else
-            {
-                prefCount_ = nullptr;
-                length_= nullptr;
-                s_ = nullptr;
-            }
-        }
-    }
-
-    char* getChar() const
-    {
-        return this->s_;
-    }
-
+    // mozgato konstruktor
+    MyString(MyString&& theOther) noexcept;
+    
+    // destruktor
+    ~MyString() noexcept;
+    
+//getterek:
     //hossz lekérezése
-    int getLength() const
-    {
-        return *length_;
-    }
-    int getrefCount() const
-    {
-        return *this->prefCount_;
-    }
+    int& getLength() const;
+    
+    // referencia szam lekerdezese
+    int& getrefCount() const;
+//operator tulterhelesek
+    //értékadás operator =
+    void operator=(const MyString& theOther);
 
-    //értékadás:
-    void operator=(const MyString& theOther)
-    {   
-        //ha eddig referált valamire akkor mostmár nem
-        this->felszab();
+    //két string összefűzése operator+
+    MyString& operator+(const MyString& theOther) const;
+    
+    //két string összefűzése operator+=
+    MyString& operator+=(const MyString& theOther);
 
-        // mostmár egy mársikra referál
-        this->s_ = theOther.s_;
-        this->length_ = theOther.length_;
-        this->prefCount_ = theOther.prefCount_;
+    //string és karakter összefűzése operator+=
+    MyString& operator+=(const char& theOther);
+    
 
-        ++ *prefCount_;
-    }
-
-    //két sztring összefűzése operator+
-    MyString& operator+(const MyString& theOther) const
-    {
-        int length = this->getLength()+theOther.getLength();
-        char* sTmp = new char[length+1];
-        strcpy(sTmp, this->s_);
-        strcat(sTmp, theOther.s_);
-
-        MyString* tmp = new MyString(sTmp, length);
-        delete[] sTmp;
-        return *tmp;
-    }
-
-    //két sztring összefűzése operator+=
-    MyString& operator+=(const MyString& theOther)
-    {
-        int length = this->getLength()+theOther.getLength();
-        char* sTmp = new char[length+1];
-        strcpy(sTmp, this->s_);
-        strcat(sTmp, theOther.s_);
-        
-        this->felszab();
-        this->length_= new int(length+1);
-        this->s_ = sTmp;
-        this->s_[length+1] = '\0'; 
-        this->prefCount_ = new int(1);
-        return *this;
-    }
-
-    //sztring és karakter összefűzése operator+=
-    MyString& operator+=(char theOther)
-    {
-        int length = this->getLength()+1;
-        char* sTmp = new char[length+1];
-        strcpy(sTmp, this->s_);
-        //strcat(sTmp, &theOther);
-        sTmp[length-1] = theOther;
-        
-        this->felszab();
-        this->length_= new int(length);
-        this->s_ = sTmp;
-        this->s_[length] = '\0'; 
-        this->prefCount_ = new int(1);
-        return *this;
-    }
-
-    //sztring és karakter összefűzése operator+
-    MyString& operator+(char *theOther) const
-    {
-        int tmpLength = this->getLength() + strlen(theOther);
-        char* sTmp = new char[tmpLength];
-        strcpy(sTmp, this->s_);
-        strcat(sTmp, theOther);
-        
-        MyString* osszeg = new MyString(sTmp, tmpLength);
-        delete[]sTmp;
-        return *osszeg;
-    }
+    //string és karakter összefűzése operator+
+    MyString& operator+(const char *theOther) const;
+    
 
     //indexelés:
-    char& operator[](int key)
-    {
-        return s_[key];
-    }
+    char& operator[](const int key);
+
+    //kiírás
+    friend std::ostream& operator<<(std::ostream& os, const MyString& write);
+    
+    //beolvasás
+    friend std::istream& operator>>(std::istream& is, MyString& read) ;
+    
 };
 
-//kiírás
- std::ostream& operator<<(std::ostream& os, const MyString& write)
-{
-    os<<write.getChar();
-    return os;
-}
 
-//beolvasás
-std::istream& operator>>(std::istream& is, MyString& read) 
-{
-    read.felszab(); // Töröljük a meglévő tartalmat
-    char ch;
-    is.get(ch);
-    MyString* tmpS = new MyString(&ch, (strlen(&ch)-6));
-    while(is.get(ch) && ch!='\n')
-    {
-        tmpS->operator+=(ch);
-        
-    }
-   
-    read = *tmpS;
-    is.unget();
-    return is;
-}
+
+
 
 
 
