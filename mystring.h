@@ -192,29 +192,16 @@ public:
 //beolvasás
 std::istream& operator>>(std::istream& is, MyString& read) 
 {
-    //read.felszab(); // Töröljük a meglévő tartalmat
+    read.felszab(); // Töröljük a meglévő tartalmat
     char ch;
     is.get(ch);
-    MyString* tmpS = new MyString(&ch, (strlen(&ch)-5));
-   while(is.get(ch) && ch!='\n')
-   {
-    tmpS->operator+=(ch);
-    /*
-        int length = read->getLength()+1;
-        char* sTmp = new char[length+1];
-        strcpy(sTmp, read->s_);
-        //strcat(sTmp, &theOther);
-        sTmp[length-1] = ch;
+    MyString* tmpS = new MyString(&ch, (strlen(&ch)-6));
+    while(is.get(ch) && ch!='\n')
+    {
+        tmpS->operator+=(ch);
         
-        read->felszab();
-        read->length_= new int(length);
-        read->s_ = sTmp;
-        read->s_[length] = '\0'; 
-        read->prefCount_ = new int(1);*/
-   }
-    //MyString *tmp = new MyString(ch);
-
-    //read = *tmp;
+    }
+   
     read = *tmpS;
     is.unget();
     return is;

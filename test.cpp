@@ -3,55 +3,49 @@
 
 int main()
 {
-    MyString alma = MyString("alma", 4);
-    //std::cout<< "alma:"<< alma.getrefCount() <<std::endl; // alma = 1
+    // referencia szamlalas
+    MyString a = "alma";
+    MyString b = a;
+    MyString c = b;
+    std::cout << "'a' = alma" << std::endl << "'b' = 'a', 'c' = 'b'" << std::endl;
+    std::cout << "'c': " << c << std::endl;
+    std::cout <<"'a' refCount: " << a.getrefCount() << std::endl;
+    c.~MyString();
+    std::cout << "'a' refcount 'c' destruktora utan: " << a.getrefCount() << std::endl;
 
-    MyString korte = MyString("korte");
-    //std::cout<< "korte:"<< korte.getrefCount() <<std::endl; // korte = 1
-    //MyString b = MyString(korte);
-    //std::cout<< "korte:"<< korte.getrefCount() <<std::endl; // korte = 2
+    //operator+=
+    b+=a;
+    std::cout << std::endl << "'b' += 'a': "<< b << std::endl;
 
-    //korte + alma;
-    //korte+ "korte";
-    //korte + 'k';
-    //MyString uj = MyString(alma + korte); 
-    //MyString uj = alma + korte; 
-    //std::cout<< uj.getChar() <<std::endl;
-    //b = alma;
-    //std::cout<< "korte:"<< korte.getrefCount() <<std::endl; // korte = 1
-    //std::cout<< "alma:"<< alma.getrefCount() <<std::endl; // alma = 2
-    //alma+=korte;
-    //MyString  almai = alma + "f";
+    b.~MyString();
+    a.~MyString();
+
+    MyString barack = "barack";
+    barack += 's';
+    std::cout << std::endl << "barack += 's': " << barack << std::endl;
+
+    barack.~MyString();
     
-    //korte += 'i';
-    //std::cout<< almai.getChar()<<std::endl;
-    //std::cout<< alma.getChar()<<std::endl;
-    //std::cout<< korte <<std::endl;
-    //std::cout << korte <<std::endl;
-    //std::cout<<korte[0]<<std::endl;
-    MyString proba;
-    std::cin>>proba;
-    std::cout<< "ANYÁD" <<std::endl;
+    //operator +
+    MyString korte = "korte";
+    MyString alma = "alma";
+    MyString almaKorte = alma + korte;
+    std::cout << std::endl << "alma + korte: " << almaKorte  << std::endl;
+    // operator []
+    std::cout << std::endl << "alma[3]: " << alma[3] << std::endl;
 
-    std::cout<< proba <<std::endl;
+    almaKorte.~MyString();
+    alma.~MyString();
+    korte.~MyString();
 
-    //MyString barack = MyString(&alma);
-    //char *text = korte.str_->getChar();
-    
-    //std::cout<< korte.getChar() <<std::endl;
-    //std::cout<< korte.getLength() <<std::endl;
-    //std::cout<< korte.getrefCount() <<std::endl; //korte = 2
-    //b.~MyString();
-    //std::cout<< "alma:"<<alma.getrefCount() <<std::endl; //korte = 1
-    //korte.~MyString(); 
+    std::cout << std::endl << "irjon be egy tetszoleges stringet:" << std::endl;
+    MyString tetszoleges;  // létrehozas alapertelmezett konstruktorral
+    std::cin >> tetszoleges;
+    std::cout << "a megadott string: " << tetszoleges << std::endl;
+    std::cout << "hossza: " << tetszoleges.getLength() << std::endl;
 
-    //std::cout<< alma.getrefCount() <<std::endl;
-    
-    //std::cout<< text <<std::endl;
-    //std::cout<< alma.getSize() <<std::endl;
+    tetszoleges.felszab();
 
-
-    //std::cout<< "Hello World!" <<std::endl;
 
     return 0;
 }
